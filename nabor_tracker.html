@@ -160,6 +160,7 @@ const GID_HR    = '1690462673';  // HR data
 const GID_NABOR = '1567340540';  // Data nábor
 const csvUrl = gid => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
 const csvNaborUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_NABOR}&tq=${encodeURIComponent('select * where P=1')}`;
+const csvHRUrl = (offset=0) => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_HR}&tq=${encodeURIComponent('select A,C,D limit 9000 offset '+offset)}`;
 
 const FAZE = [
   'V čekačce',
@@ -258,9 +259,19 @@ function getWeekLabel(str){
 let cacheHR=null, cacheNabor=null;
 async function fetchHR(){
   if(cacheHR)return cacheHR;
-  const r=await fetch(csvUrl(GID_HR));
-  if(!r.ok)throw new Error('HR data: HTTP '+r.status);
-  cacheHR=parseCSV(await r.text());
+  // Načti HR data po dávkách 9000 řádků
+  let allRows=[];
+  let header=null;
+  for(let offset=0;offset<100000;offset+=9000){
+    const r=await fetch(csvHRUrl(offset));
+    if(!r.ok)throw new Error('HR data: HTTP '+r.status);
+    const parsed=parseCSV(await r.text());
+    if(!parsed.rows.length)break;
+    if(!header)header=parsed.header;
+    allRows=allRows.concat(parsed.rows);
+    if(parsed.rows.length<9000)break;
+  }
+  cacheHR={header:header||[],rows:allRows};
   return cacheHR;
 }
 async function fetchNabor(){
