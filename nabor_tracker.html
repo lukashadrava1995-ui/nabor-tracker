@@ -295,7 +295,7 @@ async function loadTracker(){
     const nh=nabor.header;
     const nCourier = colIdx(nh,['courier_id']);
     const nState   = colIdx(nh,['state_id']); // state_id obsahuje text fáze, state je číslo
-    const nDate    = colIdx(nh,['date']);
+    const nDate    = colIdx(nh,['timestamp']); // Date je vzorec, timestamp je Unix seconds
     const nWH      = colIdx(nh,['wh']);
     // is max state all = index 15 (druhý výskyt), je 1 pokud je to aktuálně poslední stav uchazeče
     console.log('Header Data nábor:', nh);
