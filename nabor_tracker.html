@@ -164,14 +164,14 @@ function parseCSVLine(line) {
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   if (lines.length < 2) return [];
-  const header = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase()
-    .replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,''));
+  const rawHeader = parseCSVLine(lines[0]).map(h => h.trim());
+  const header = rawHeader.map(h => h.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,''));
   const rows = [];
   for (let i = 1; i < lines.length; i++) {
     const vals = parseCSVLine(lines[i]);
     if (!vals.some(v => v.trim())) continue;
-    const obj = {};
-    header.forEach((h, idx) => obj[h] = (vals[idx] || '').trim());
+    const obj = { _vals: vals.map(v => (v||'').trim()), _header: header };
+    header.forEach((h, idx) => { if (!(h in obj)) obj[h] = (vals[idx] || '').trim(); });
     rows.push(obj);
   }
   return rows;
@@ -179,9 +179,19 @@ function parseCSV(text) {
 
 function getField(row, candidates) {
   for (const c of candidates) {
+    const idx = row._header ? row._header.findIndex(h => h === c || h.includes(c.replace(/[^a-z0-9]/g,''))) : -1;
+    if (idx >= 0) return row._header[idx];
     if (row[c] !== undefined) return c;
   }
   return null;
+}
+
+function getVal(row, candidates) {
+  for (const c of candidates) {
+    const idx = row._header ? row._header.findIndex(h => h === c) : -1;
+    if (idx >= 0 && row._vals[idx]) return row._vals[idx];
+  }
+  return '';
 }
 
 function parseCzDate(str) {
@@ -226,21 +236,22 @@ async function loadData() {
     const raw = parseCSV(text);
     if (!raw.length) throw new Error('Prázdná tabulka nebo chyba parsování.');
 
-    const fId     = getField(raw[0], ['hiring_id','id','hiring_i']);
-    const fSur    = getField(raw[0], ['surname','pjmen','prijmen']);
-    const fName   = getField(raw[0], ['name','jmno']);
-    const fLoc    = getField(raw[0], ['hiring_location','lokalita','location']);
-    const fState  = getField(raw[0], ['state_desc','fze','stav','state']);
-    const fSince  = getField(raw[0], ['ve_stavu_od','vestavu_od','since','datum']);
+    const sample = raw[0];
+    const idIdx    = sample._header.findIndex(h => h === 'hiring_id' || h === 'id');
+    const surIdx   = sample._header.findIndex(h => h === 'surname');
+    const nameIdx  = sample._header.findIndex(h => h === 'name');
+    const locIdx   = sample._header.indexOf('hiring_location');
+    const stateIdx = sample._header.findIndex(h => h === 'state_desc');
+    const sinceIdx = sample._header.findIndex(h => h === 've_stavu_od');
 
-    allRows = raw.filter(r => r[fSur] || r[fName]).map(r => ({
-      id:       r[fId]    || '',
-      surname:  r[fSur]   || '',
-      name:     r[fName]  || '',
-      location: r[fLoc]   || '',
-      phase:    r[fState] || '',
-      since:    r[fSince] || '',
-      days:     daysSince(r[fSince])
+    allRows = raw.filter(r => r._vals[surIdx] || r._vals[nameIdx]).map(r => ({
+      id:       idIdx    >= 0 ? r._vals[idIdx]    : '',
+      surname:  surIdx   >= 0 ? r._vals[surIdx]   : '',
+      name:     nameIdx  >= 0 ? r._vals[nameIdx]  : '',
+      location: locIdx   >= 0 ? r._vals[locIdx]   : '',
+      phase:    stateIdx >= 0 ? r._vals[stateIdx] : '',
+      since:    sinceIdx >= 0 ? r._vals[sinceIdx] : '',
+      days:     sinceIdx >= 0 ? daysSince(r._vals[sinceIdx]) : null
     }));
 
     populateFilters();
