@@ -211,13 +211,8 @@ async function loadTracker(){
   try{
     const [hr,nabor]=await Promise.all([fetchHR(),fetchNabor()]);
 
-    // HR data: hiring_id(A), surname(C), name(D), hiring_location(H), state_desc(K)
-    const hh=hr.header;
-    const hId   =colIdx(hh,['hiring_id','a']);
-    const hSur  =colIdx(hh,['surname','c']);
-    const hName =colIdx(hh,['name','d']);
-    const hLoc  =colIdx(hh,['hiring_location','h']);
-    const hState=colIdx(hh,['state_desc','k']);
+    // HR data: select A,C,D,H,K → pevné indexy 0,1,2,3,4
+    const hId=0, hSur=1, hName=2, hLoc=3, hState=4;
 
     // Data nábor: id → max timestamp (query vrací col0=id, col1=max_timestamp)
     // Data nábor is_max_state=1: páruj přes id = hiring_id
