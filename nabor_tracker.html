@@ -23,15 +23,11 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh}
 .page{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 3rem}
 h1{font-size:20px;font-weight:500;display:flex;align-items:center;gap:8px;margin-bottom:1.25rem}
-
-/* Tabs */
 .tabs{display:flex;gap:4px;margin-bottom:1.25rem;border-bottom:0.5px solid var(--border)}
 .tab{padding:8px 16px;font-size:13px;cursor:pointer;border:none;background:none;color:var(--text2);border-bottom:2px solid transparent;margin-bottom:-1px}
 .tab.active{color:var(--text);border-bottom-color:var(--text);font-weight:500}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
-
-/* Controls */
 .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:1.25rem}
 select,input[type=text]{font-size:13px;padding:6px 10px;border:0.5px solid var(--border2);border-radius:var(--r-md);background:var(--bg);color:var(--text);height:34px;outline:none}
 select:focus,input[type=text]:focus{box-shadow:0 0 0 2px var(--info-bg)}
@@ -39,16 +35,12 @@ input[type=text]{width:160px}
 .btn{background:transparent;border:0.5px solid var(--border2);border-radius:var(--r-md);padding:6px 12px;font-size:13px;cursor:pointer;color:var(--text);display:flex;align-items:center;gap:6px;height:34px;white-space:nowrap}
 .btn:hover{background:var(--bg2)}
 .btn:active{transform:scale(0.98)}
-
-/* Metrics */
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1.25rem}
 .mc{background:var(--bg2);border-radius:var(--r-md);padding:12px 16px}
 .mc-label{font-size:12px;color:var(--text2);margin-bottom:4px}
 .mc-val{font-size:24px;font-weight:500}
 .mc-alert .mc-val{color:#a32d2d}
 @media(prefers-color-scheme:dark){.mc-alert .mc-val{color:#f7c1c1}}
-
-/* Card / table */
 .card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
@@ -58,8 +50,6 @@ th.sortable:hover{color:var(--text)}
 td{padding:9px 12px;border-bottom:0.5px solid var(--border);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--bg2)}
-
-/* Badges */
 .badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 8px;border-radius:99px}
 .days-ok{background:#eaf3de;color:#3b6d11}
 .days-warn{background:#faeeda;color:#854f0b}
@@ -70,19 +60,10 @@ tr:hover td{background:var(--bg2)}
   .days-alert{background:#791f1f;color:#f7c1c1}
 }
 .phase-badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:99px;background:var(--info-bg);color:var(--info-text);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
-/* Funnel */
-.funnel-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:1.25rem}
-.funnel-table td:nth-child(3){font-weight:500;font-size:15px}
-.funnel-table td:nth-child(4),.funnel-table td:nth-child(5){color:var(--text2)}
-.funnel-table td:nth-child(6){color:#a32d2d}
-@media(prefers-color-scheme:dark){.funnel-table td:nth-child(6){color:#f7c1c1}}
 .funnel-bar-wrap{width:100%;background:var(--bg2);border-radius:4px;height:6px;overflow:hidden;margin-top:4px}
-.funnel-bar{height:6px;background:var(--info-text);border-radius:4px;transition:width 0.3s}
-.f-first td:nth-child(3){color:#185fa5}
-.f-last td:nth-child(3){color:#3b6d11}
-
-/* Status */
+.funnel-bar{height:6px;background:var(--info-text);border-radius:4px}
+.f-first td:nth-child(3){color:#185fa5;font-weight:500}
+.f-last td:nth-child(3){color:#3b6d11;font-weight:500}
 .status{padding:1.5rem;text-align:center;color:var(--text2);font-size:13px}
 .status.error{color:#a32d2d}
 .empty{padding:2.5rem;text-align:center;color:var(--text2)}
@@ -96,11 +77,11 @@ tr:hover td{background:var(--bg2)}
 <h1><i class="ti ti-user-check" style="font-size:22px"></i>Náborový tracker</h1>
 
 <div class="tabs">
-  <button class="tab active" onclick="switchTab('tracker')"><i class="ti ti-list"></i> Aktuální stav</button>
-  <button class="tab" onclick="switchTab('funnel')"><i class="ti ti-filter"></i> Funnel po kohortách</button>
+  <button class="tab active" onclick="switchTab('tracker',this)"><i class="ti ti-list"></i> Aktuální stav</button>
+  <button class="tab" onclick="switchTab('funnel',this)"><i class="ti ti-filter"></i> Funnel po kohortách</button>
 </div>
 
-<!-- TAB 1: Aktuální stav -->
+<!-- TAB 1 -->
 <div id="tab-tracker" class="tab-panel active">
   <div class="controls">
     <input type="text" id="search" placeholder="Hledat jméno…">
@@ -139,9 +120,9 @@ tr:hover td{background:var(--bg2)}
   <div class="footer" id="footer"></div>
 </div>
 
-<!-- TAB 2: Funnel -->
+<!-- TAB 2 -->
 <div id="tab-funnel" class="tab-panel">
-  <div class="funnel-controls">
+  <div class="controls">
     <select id="fSklad"><option value="">Všechny sklady</option></select>
     <select id="fTyden"></select>
     <button class="btn" id="btnFunnelRefresh"><i class="ti ti-refresh"></i>Aktualizovat</button>
@@ -149,12 +130,12 @@ tr:hover td{background:var(--bg2)}
   <div class="metrics">
     <div class="mc"><div class="mc-label">Kohorta (vyplnili formulář)</div><div class="mc-val" id="fmKohorta">–</div></div>
     <div class="mc"><div class="mc-label">Aktivní v procesu</div><div class="mc-val" id="fmAktivni">–</div></div>
-    <div class="mc mc-alert"><div class="mc-label">Odpad (ukončen/nemá zájem)</div><div class="mc-val" id="fmOdpad">–</div></div>
+    <div class="mc mc-alert"><div class="mc-label">Odpad</div><div class="mc-val" id="fmOdpad">–</div></div>
     <div class="mc"><div class="mc-label">Dokončeno</div><div class="mc-val" id="fmDone" style="color:#3b6d11">–</div></div>
   </div>
   <div class="card">
     <div class="tbl-wrap">
-      <table class="funnel-table">
+      <table>
         <thead><tr>
           <th style="width:40px">#</th>
           <th>Fáze náboru</th>
@@ -162,7 +143,7 @@ tr:hover td{background:var(--bg2)}
           <th style="width:110px">% ze vstupu</th>
           <th style="width:130px">% z předchozího</th>
           <th style="width:110px">Odpad z kroku</th>
-          <th style="width:200px">Průběh</th>
+          <th style="width:180px">Průběh</th>
         </tr></thead>
         <tbody id="funnelBody"></tbody>
       </table>
@@ -174,9 +155,9 @@ tr:hover td{background:var(--bg2)}
 </div>
 
 <script>
-const SHEET_ID   = '1Uv2FopQw5G9R1zvHaklswL9r_gqSO8RqJZ_vH7LzfQk';
-const GID_HR     = '1690462673';
-const GID_FILTR  = '1770469936';
+const SHEET_ID  = '1Uv2FopQw5G9R1zvHaklswL9r_gqSO8RqJZ_vH7LzfQk';
+const GID_HR    = '1690462673';  // HR data
+const GID_NABOR = '1567340540';  // Data nábor
 const csvUrl = gid => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
 
 const FAZE = [
@@ -191,16 +172,16 @@ const FAZE = [
   'Závěrečný test',
   'Dokončeno',
 ];
-const FAZE_IDX = {};
-FAZE.forEach((f,i) => FAZE_IDX[f.toLowerCase().trim()] = i);
+const FAZE_IDX={};
+FAZE.forEach((f,i)=>FAZE_IDX[f.toLowerCase().trim()]=i);
 
-const ODPAD = new Set([
+const ODPAD=new Set([
   'ukončen - naše žádost','ukončen','ukončen - vlastní žádost',
   'nemá zájem','nemá zájem - nereaguje','nemá zájem - vlastní žádost',
   'nemáme zájem','ukončen pro neaktivitu',
 ]);
 
-// ===== CSV PARSER =====
+// CSV parser
 function parseCSVLine(line){
   const r=[];let cur='',inQ=false;
   for(let i=0;i<line.length;i++){
@@ -213,21 +194,25 @@ function parseCSVLine(line){
 }
 function parseCSV(text){
   const lines=text.trim().split('\n');
-  if(lines.length<2)return[];
-  const rawH=parseCSVLine(lines[0]).map(h=>h.trim());
-  const header=rawH.map(h=>h.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,''));
+  if(lines.length<2)return{header:[],rows:[]};
+  const header=parseCSVLine(lines[0]).map(h=>h.trim().toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,''));
   const rows=[];
   for(let i=1;i<lines.length;i++){
-    const vals=parseCSVLine(lines[i]);
-    if(!vals.some(v=>v.trim()))continue;
-    const obj={_vals:vals.map(v=>(v||'').trim()),_header:header};
-    header.forEach((h,idx)=>{if(!(h in obj))obj[h]=(vals[idx]||'').trim();});
-    rows.push(obj);
+    const vals=parseCSVLine(lines[i]).map(v=>v.trim());
+    if(!vals.some(v=>v))continue;
+    rows.push(vals);
   }
-  return rows;
+  return{header,rows};
+}
+function colIdx(header,candidates){
+  for(const c of candidates){
+    const i=header.indexOf(c);
+    if(i>=0)return i;
+  }
+  return -1;
 }
 
-// ===== DATE UTILS =====
+// Dates
 function parseCzDate(str){
   if(!str)return null;
   const m=str.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
@@ -245,102 +230,104 @@ function formatDate(str){
   if(!d)return str||'–';
   return d.toLocaleDateString('cs-CZ',{day:'2-digit',month:'2-digit',year:'numeric'});
 }
-function getWeekLabel(dateStr){
-  let d=dateStr instanceof Date?dateStr:new Date(dateStr);
-  if(isNaN(d))return null;
+function getWeekLabel(str){
+  let d=parseCzDate(str);
+  if(!d)d=new Date(str);
+  if(!d||isNaN(d))return null;
   const utc=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
   const day=utc.getUTCDay()||7;
   utc.setUTCDate(utc.getUTCDate()+4-day);
-  const yearStart=new Date(Date.UTC(utc.getUTCFullYear(),0,1));
-  const week=Math.ceil((((utc-yearStart)/86400000)+1)/7);
+  const ys=new Date(Date.UTC(utc.getUTCFullYear(),0,1));
+  const week=Math.ceil((((utc-ys)/86400000)+1)/7);
   return utc.getUTCFullYear()+'-T'+String(week).padStart(2,'0');
 }
 
-// ===== TABS =====
-function switchTab(name){
+// Cache
+let cacheHR=null, cacheNabor=null;
+async function fetchHR(){
+  if(cacheHR)return cacheHR;
+  const r=await fetch(csvUrl(GID_HR));
+  if(!r.ok)throw new Error('HR data: HTTP '+r.status);
+  cacheHR=parseCSV(await r.text());
+  return cacheHR;
+}
+async function fetchNabor(){
+  if(cacheNabor)return cacheNabor;
+  const r=await fetch(csvUrl(GID_NABOR));
+  if(!r.ok)throw new Error('Data nábor: HTTP '+r.status);
+  cacheNabor=parseCSV(await r.text());
+  return cacheNabor;
+}
+
+// Tabs
+function switchTab(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  event.currentTarget.classList.add('active');
+  el.classList.add('active');
   if(name==='funnel'&&!funnelLoaded)loadFunnel();
 }
 
 // ===== TAB 1: TRACKER =====
-let allRows=[];
-let sortCol='days';
-let sortDir=-1;
-let funnelLoaded=false;
-let hrCache=null;
-
-async function loadHR(){
-  if(hrCache)return hrCache;
-  const resp=await fetch(csvUrl(GID_HR));
-  if(!resp.ok)throw new Error('HTTP '+resp.status);
-  hrCache=parseCSV(await resp.text());
-  return hrCache;
-}
+let allRows=[],sortCol='days',sortDir=-1,funnelLoaded=false;
 
 async function loadTracker(){
   const msg=document.getElementById('statusMsg');
-  const tbody=document.getElementById('tbody');
   msg.style.display='block';msg.className='status';
   msg.innerHTML='<span class="spinner"></span>Načítám data…';
-  tbody.innerHTML='';
+  document.getElementById('tbody').innerHTML='';
 
   try{
-    const [respFiltr,rawHR]=await Promise.all([
-      fetch(csvUrl(GID_FILTR)).then(r=>r.text()),
-      loadHR()
-    ]);
-    const rawFiltr=parseCSV(respFiltr);
+    const [hr,nabor]=await Promise.all([fetchHR(),fetchNabor()]);
 
-    // Filtr_procesu: mapa id → Ve stavu od
-    const sinceMap={};
-    if(rawFiltr.length){
-      const f=rawFiltr[0];
-      const fIdIdx=f._header.findIndex(h=>h==='hiring_id');
-      const fSinceIdx=f._header.findIndex(h=>h==='ve_stavu_od');
-      rawFiltr.forEach(r=>{
-        const id=fIdIdx>=0?r._vals[fIdIdx]:'';
-        const since=fSinceIdx>=0?r._vals[fSinceIdx]:'';
-        if(id)sinceMap[id]=since;
-      });
-    }
+    // Z Data nábor: courier_id → {state, date, wh} kde is_max_state=1
+    const nh=nabor.header;
+    const nCourier = colIdx(nh,['courier_id']);
+    const nState   = colIdx(nh,['state']);
+    const nDate    = colIdx(nh,['date']);
+    const nWH      = colIdx(nh,['wh']);
+    const nIsMax   = colIdx(nh,['is_max_state']);
 
-    // HR data
-    const hr=rawHR[0];
-    const idIdx   =hr._header.findIndex(h=>h==='hiring_id');
-    const surIdx  =hr._header.findIndex(h=>h==='surname');
-    const nameIdx =hr._header.findIndex(h=>h==='name');
-    const locIdx  =hr._header.findIndex(h=>h==='hiring_location');
-    const stateIdx=hr._header.findIndex(h=>h==='state_desc');
-
-    // Deduplikace – ponecháme poslední výskyt pro každé hiring_id
-    const seen=new Set();
-    const dedup=([...rawHR]).reverse().filter(r=>{
-      const id=idIdx>=0?r._vals[idIdx]:'';
-      const key=id||(surIdx>=0?r._vals[surIdx]:'')+' '+(nameIdx>=0?r._vals[nameIdx]:'');
-      if(!key||seen.has(key))return false;
-      seen.add(key);return true;
+    // Mapa courier_id → aktuální stav z Data nábor
+    const naborMap={};
+    nabor.rows.forEach(r=>{
+      const isMax=nIsMax>=0?r[nIsMax]:'';
+      if(isMax!=='1'&&isMax!=='TRUE'&&isMax!=='true')return;
+      const cid=nCourier>=0?r[nCourier]:'';
+      if(!cid)return;
+      naborMap[cid]={
+        state: nState>=0?r[nState]:'',
+        date:  nDate>=0?r[nDate]:'',
+        wh:    nWH>=0?r[nWH]:''
+      };
     });
 
-    allRows=dedup.filter(r=>{
-      if(!(r._vals[surIdx]||r._vals[nameIdx]))return false;
-      const state=(r._vals[stateIdx]||'').toLowerCase().trim();
-      if(ODPAD.has(state)||state==='dokončeno')return false;
-      return FAZE_IDX[state]!==undefined;
-    }).map(r=>{
-      const id=idIdx>=0?r._vals[idIdx]:'';
-      const since=sinceMap[id]||'';
-      return{
-        id,
-        surname:surIdx>=0?r._vals[surIdx]:'',
-        name:nameIdx>=0?r._vals[nameIdx]:'',
-        location:locIdx>=0?r._vals[locIdx]:'',
-        phase:stateIdx>=0?r._vals[stateIdx]:'',
-        since,
-        days:since?daysSince(since):null
-      };
+    // Z HR data: hiring_id, surname, name (pro jména)
+    const hh=hr.header;
+    const hId   =colIdx(hh,['hiring_id']);
+    const hSur  =colIdx(hh,['surname']);
+    const hName =colIdx(hh,['name']);
+
+    // Deduplikace HR podle hiring_id
+    const seenHR=new Set();
+    const hrDedup=hr.rows.filter(r=>{
+      const id=hId>=0?r[hId]:'';
+      if(!id||seenHR.has(id))return false;
+      seenHR.add(id);return true;
+    });
+
+    allRows=[];
+    hrDedup.forEach(r=>{
+      const id  =hId>=0?r[hId]:'';
+      const sur =hSur>=0?r[hSur]:'';
+      const name=hName>=0?r[hName]:'';
+      const n=naborMap[id];
+      if(!n)return;
+      const state=n.state.toLowerCase().trim();
+      if(ODPAD.has(state)||state==='dokončeno'||state==='duplicita')return;
+      if(FAZE_IDX[state]===undefined)return;
+      const days=daysSince(n.date);
+      allRows.push({id,surname:sur,name,location:n.wh,phase:n.state,since:n.date,days});
     });
 
     populateTrackerFilters();
@@ -349,7 +336,7 @@ async function loadTracker(){
     document.getElementById('footer').textContent='Poslední aktualizace: '+new Date().toLocaleString('cs-CZ');
   }catch(e){
     msg.className='status error';
-    msg.innerHTML='<i class="ti ti-alert-circle" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>Nepodařilo se načíst data. Zkontroluj sdílení listu.<br><small>'+e.message+'</small>';
+    msg.innerHTML='<i class="ti ti-alert-circle" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>Chyba: '+e.message;
   }
 }
 
@@ -391,24 +378,21 @@ function renderTracker(){
     return av<bv?sortDir:av>bv?-sortDir:0;
   });
   const tbody=document.getElementById('tbody');
-  if(!sorted.length){
-    tbody.innerHTML='<tr><td colspan="6" class="empty">Žádní uchazeči neodpovídají filtru.</td></tr>';
-  }else{
-    tbody.innerHTML=sorted.map(r=>`<tr>
-      <td style="color:var(--text2);font-size:12px">${r.id}</td>
-      <td style="font-weight:500">${r.surname}${r.name?' '+r.name:''}</td>
-      <td style="color:var(--text2)">${r.location||'–'}</td>
-      <td><span class="phase-badge" title="${r.phase}">${r.phase||'–'}</span></td>
-      <td style="color:var(--text2);font-size:12px">${formatDate(r.since)}</td>
-      <td><span class="badge ${daysClass(r.days)}">${r.days!==null?r.days+' d':'–'}</span></td>
-    </tr>`).join('');
-  }
+  tbody.innerHTML=sorted.length?sorted.map(r=>`<tr>
+    <td style="color:var(--text2);font-size:12px">${r.id}</td>
+    <td style="font-weight:500">${r.surname}${r.name?' '+r.name:''}</td>
+    <td style="color:var(--text2)">${r.location||'–'}</td>
+    <td><span class="phase-badge" title="${r.phase}">${r.phase||'–'}</span></td>
+    <td style="color:var(--text2);font-size:12px">${formatDate(r.since)}</td>
+    <td><span class="badge ${daysClass(r.days)}">${r.days!==null?r.days+' d':'–'}</span></td>
+  </tr>`).join(''):'<tr><td colspan="6" class="empty">Žádní uchazeči neodpovídají filtru.</td></tr>';
+
   const a15=filtered.filter(r=>r.days!==null&&r.days>=15).length;
   const dArr=filtered.filter(r=>r.days!==null).map(r=>r.days);
   const avg=dArr.length?Math.round(dArr.reduce((s,v)=>s+v,0)/dArr.length):null;
   const locs=new Set(filtered.map(r=>r.location).filter(Boolean));
   document.getElementById('mTotal').textContent=filtered.length;
-  document.getElementById('mAvg').textContent=avg!==null?avg:'–';
+  document.getElementById('mAvg').textContent=avg??'–';
   document.getElementById('mAlert').textContent=a15;
   document.getElementById('mLoc').textContent=locs.size;
 }
@@ -424,10 +408,11 @@ document.querySelectorAll('th.sortable').forEach(th=>{
     renderTracker();
   });
 });
-document.getElementById('btnRefresh').addEventListener('click',()=>{hrCache=null;loadTracker();});
+document.getElementById('btnRefresh').addEventListener('click',()=>{cacheHR=null;cacheNabor=null;loadTracker();});
 
 // ===== TAB 2: FUNNEL =====
-let funnelData=[];
+// Funnel používá HR data pro created_at (kohortu) + Data nábor pro aktuální stav
+let funnelRows=[];
 
 async function loadFunnel(){
   const msg=document.getElementById('funnelStatus');
@@ -435,37 +420,55 @@ async function loadFunnel(){
   msg.innerHTML='<span class="spinner"></span>Načítám data…';
 
   try{
-    const rawHR=await loadHR();
-    const hr=rawHR[0];
-    const idIdx   =hr._header.findIndex(h=>h==='hiring_id');
-    const locIdx  =hr._header.findIndex(h=>h==='hiring_location');
-    const stateIdx=hr._header.findIndex(h=>h==='state_desc');
-    const crIdx   =hr._header.findIndex(h=>h==='created_at');
+    const [hr,nabor]=await Promise.all([fetchHR(),fetchNabor()]);
+
+    // HR data: hiring_id → created_at
+    const hh=hr.header;
+    const hId  =colIdx(hh,['hiring_id']);
+    const hCr  =colIdx(hh,['created_at']);
+
+    const createdMap={};
+    const seenHR=new Set();
+    hr.rows.forEach(r=>{
+      const id=hId>=0?r[hId]:'';
+      if(!id||seenHR.has(id))return;
+      seenHR.add(id);
+      createdMap[id]=hCr>=0?r[hCr]:'';
+    });
+
+    // Data nábor: courier_id, is_max_state, state, wh
+    const nh=nabor.header;
+    const nCourier=colIdx(nh,['courier_id']);
+    const nState  =colIdx(nh,['state']);
+    const nWH     =colIdx(nh,['wh']);
+    const nIsMax  =colIdx(nh,['is_max_state']);
 
     const sklady=new Set();
     const tydny=new Set();
-    funnelData=[];
+    funnelRows=[];
 
-    // Deduplikace – ponecháme poslední výskyt pro každé hiring_id
-    const seenIds = new Set();
-    const dedupHR = [...rawHR].reverse().filter(r => {
-      const id = idIdx >= 0 ? r._vals[idIdx] : '';
-      const key = id || (surIdx >= 0 ? r._vals[surIdx] : '') + '_' + (nameIdx >= 0 ? r._vals[nameIdx] : '');
-      if (!key || seenIds.has(key)) return false;
-      seenIds.add(key);
-      return true;
-    });
+    // Deduplikace Data nábor – jen is_max_state=1 a jeden záznam per courier_id
+    const seenN=new Set();
+    nabor.rows.forEach(r=>{
+      const isMax=nIsMax>=0?r[nIsMax]:'';
+      if(isMax!=='1'&&isMax!=='TRUE'&&isMax!=='true')return;
+      const cid=nCourier>=0?r[nCourier]:'';
+      if(!cid||seenN.has(cid))return;
+      seenN.add(cid);
 
-    dedupHR.forEach(r=>{
-      const loc  =locIdx>=0?r._vals[locIdx]:'';
-      const state=(stateIdx>=0?r._vals[stateIdx]:'').toLowerCase().trim();
-      const cr   =crIdx>=0?r._vals[crIdx]:'';
-      if(!loc||!cr)return;
-      const tyden=getWeekLabel(cr);
+      const state=(nState>=0?r[nState]:'').toLowerCase().trim();
+      if(state==='duplicita')return;
+
+      const wh=nWH>=0?r[nWH]:'';
+      const created=createdMap[cid]||'';
+      if(!created)return;
+
+      const tyden=getWeekLabel(created);
       if(!tyden)return;
-      sklady.add(loc);
+
+      sklady.add(wh);
       tydny.add(tyden);
-      funnelData.push({loc,state,tyden});
+      funnelRows.push({wh,state,tyden});
     });
 
     const skladList=[...sklady].sort();
@@ -488,59 +491,49 @@ async function loadFunnel(){
 function renderFunnel(){
   const sklad=document.getElementById('fSklad').value;
   const tyden=document.getElementById('fTyden').value;
-
-  const kohorta=funnelData.filter(u=>{
-    if(u.tyden!==tyden)return false;
-    if(sklad&&u.loc!==sklad)return false;
-    return true;
-  });
-
+  const kohorta=funnelRows.filter(u=>u.tyden===tyden&&(!sklad||u.wh===sklad));
   const celkem=kohorta.length;
   const odpadCount=kohorta.filter(u=>ODPAD.has(u.state)).length;
-  const aktivni=celkem-odpadCount;
   const doneCount=kohorta.filter(u=>u.state==='dokončeno').length;
+  const aktivni=celkem-odpadCount-doneCount;
 
   document.getElementById('fmKohorta').textContent=celkem;
   document.getElementById('fmAktivni').textContent=aktivni;
   document.getElementById('fmOdpad').textContent=odpadCount;
   document.getElementById('fmDone').textContent=doneCount;
 
-  const counts=FAZE.map((_,fazIdx)=>
-    kohorta.filter(u=>{
-      const idx=FAZE_IDX[u.state];
-      return idx!==undefined&&idx>=fazIdx;
-    }).length
-  );
+  const counts=FAZE.map((_,fi)=>kohorta.filter(u=>{
+    const idx=FAZE_IDX[u.state];
+    return idx!==undefined&&idx>=fi;
+  }).length);
 
   const vstup=counts[0]||1;
-  const tbody=document.getElementById('funnelBody');
-  tbody.innerHTML=FAZE.map((faze,i)=>{
+  document.getElementById('funnelBody').innerHTML=FAZE.map((faze,i)=>{
     const count=counts[i];
-    const pctVstupu=celkem>0?(count/celkem*100).toFixed(1)+'%':'–';
-    const pctPred=i===0?'–':(counts[i-1]>0?(count/counts[i-1]*100).toFixed(1)+'%':'–');
+    const pctV=celkem>0?(count/celkem*100).toFixed(1)+'%':'–';
+    const pctP=i===0?'–':(counts[i-1]>0?(count/counts[i-1]*100).toFixed(1)+'%':'–');
     const odpad=i===0?odpadCount:counts[i-1]-counts[i];
-    const barW=vstup>0?Math.round(count/vstup*100):0;
-    const rowClass=i===0?'f-first':i===FAZE.length-1?'f-last':'';
-    return`<tr class="${rowClass}">
+    const barW=Math.round(count/vstup*100);
+    const rc=i===0?'f-first':i===FAZE.length-1?'f-last':'';
+    return`<tr class="${rc}">
       <td style="color:var(--text2)">${i+1}</td>
       <td>${faze}</td>
       <td>${count}</td>
-      <td style="color:var(--text2)">${pctVstupu}</td>
-      <td style="color:var(--text2)">${pctPred}</td>
-      <td>${odpad>0?'−'+odpad:''}</td>
+      <td style="color:var(--text2)">${pctV}</td>
+      <td style="color:var(--text2)">${pctP}</td>
+      <td style="color:#a32d2d">${odpad>0?'−'+odpad:''}</td>
       <td><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${barW}%"></div></div></td>
     </tr>`;
   }).join('');
 
   document.getElementById('funnelFooter').textContent=
-    `Sklad: ${sklad||'Všechny'} | Týden: ${tyden} | Kohorta: ${celkem} | Aktualizováno: ${new Date().toLocaleString('cs-CZ')}`;
+    `Sklad: ${sklad||'Všechny'} | Týden: ${tyden} | Kohorta: ${celkem} | ${new Date().toLocaleString('cs-CZ')}`;
 }
 
 document.getElementById('fSklad').addEventListener('change',renderFunnel);
 document.getElementById('fTyden').addEventListener('change',renderFunnel);
-document.getElementById('btnFunnelRefresh').addEventListener('click',()=>{hrCache=null;funnelLoaded=false;loadFunnel();});
+document.getElementById('btnFunnelRefresh').addEventListener('click',()=>{cacheHR=null;cacheNabor=null;funnelLoaded=false;loadFunnel();});
 
-// Start
 loadTracker();
 </script>
 </body>
