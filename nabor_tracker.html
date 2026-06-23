@@ -215,8 +215,19 @@ function colIdx(header,candidates){
 // Dates
 function parseCzDate(str){
   if(!str)return null;
+  // Czech date format dd.mm.yyyy
   const m=str.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
   if(m)return new Date(+m[3],+m[2]-1,+m[1]);
+  // Excel serial number (days since 1899-12-30)
+  const n=parseFloat(str);
+  if(!isNaN(n)&&n>40000&&n<60000){
+    return new Date(Math.round((n-25569)*86400000));
+  }
+  // Unix timestamp (seconds)
+  if(!isNaN(n)&&n>1000000000&&n<2000000000){
+    return new Date(n*1000);
+  }
+  // ISO / other
   const d=new Date(str.replace(' ','T'));
   return isNaN(d)?null:d;
 }
