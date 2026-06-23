@@ -136,8 +136,8 @@ const SHEET_ID  = '1Uv2FopQw5G9R1zvHaklswL9r_gqSO8RqJZ_vH7LzfQk';
 const GID_HR    = '1690462673';
 const GID_NABOR = '1567340540';
 const csvUrl = gid => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
-const csvNaborUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_NABOR}&tq=${encodeURIComponent('select * where P=1')}`;
-const csvHRUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_HR}&tq=${encodeURIComponent('select A,C,D,H,K,R')}`;
+const csvNaborUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_NABOR}&tq=${encodeURIComponent('select A,max(D) group by A')}`;
+const csvHRUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_HR}&tq=${encodeURIComponent('select A,C,D,H,K')}`;
 
 const FAZE=['V čekačce','Čekáme na výběr termínu informační jízdy','Čeká na informační jízdu','Informační schůzka OK, čekáme na feedback','Čekáme na podpis smlouvy','Čekáme na dokončení online teorie','Čekáme na výběr termínu první jízdy','První jízda','Závěrečný test','Dokončeno'];
 const FAZE_IDX={};FAZE.forEach((f,i)=>FAZE_IDX[f.toLowerCase().trim()]=i);
@@ -219,17 +219,11 @@ async function loadTracker(){
     const hLoc  =colIdx(hh,['hiring_location','h']);
     const hState=colIdx(hh,['state_desc','k']);
 
-    // Data nábor: courier_id → timestamp (aktuální stav)
-    const nh=nabor.header;
-    const nId       =colIdx(nh,['id']);
-    const nTimestamp=colIdx(nh,['timestamp']);
-    const nStateId  =colIdx(nh,['state_id']);
-
-    // Mapa courier_id → timestamp z Data nábor
+    // Data nábor: id → max timestamp (query vrací col0=id, col1=max_timestamp)
     const tsMap={};
     nabor.rows.forEach(r=>{
-      const cid=nId>=0?r[nId]:'';
-      const ts =nTimestamp>=0?r[nTimestamp]:'';
+      const cid=r[0]?String(Math.round(parseFloat(r[0]))):'' ;
+      const ts =r[1]||'';
       if(cid&&ts)tsMap[cid]=ts;
     });
 
@@ -243,10 +237,7 @@ async function loadTracker(){
       const state=(hState>=0?r[hState]:'').toLowerCase().trim();
       if(ODPAD.has(state)||state==='dokončeno'||state==='duplicita')return;
       if(FAZE_IDX[state]===undefined)return;
-      // Fallback: pokud není timestamp z Data nábor, použij created_at z HR data
-      const hCr=colIdx(hh,['created_at']);
-      const naborTs=tsMap[id]||'';
-      const since=naborTs||(hCr>=0?r[hCr]:'');
+      const since=tsMap[id]||'';
       allRows.push({
         id,
         surname:hSur>=0?r[hSur]:'',
