@@ -7,34 +7,21 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#fff;--bg2:#f5f5f3;--bg3:#eeede9;
-  --text:#1a1a18;--text2:#6b6b67;--text3:#9b9b97;
-  --border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.2);
-  --info-bg:#e6f1fb;--info-text:#185fa5;
-  --r-md:8px;--r-lg:12px;
-}
-@media(prefers-color-scheme:dark){:root{
-  --bg:#1e1e1c;--bg2:#2a2a28;--bg3:#323230;
-  --text:#f0efe9;--text2:#a8a8a4;--text3:#6b6b67;
-  --border:rgba(255,255,255,0.12);--border2:rgba(255,255,255,0.22);
-  --info-bg:#0c447c;--info-text:#b5d4f4;
-}}
+:root{--bg:#fff;--bg2:#f5f5f3;--bg3:#eeede9;--text:#1a1a18;--text2:#6b6b67;--text3:#9b9b97;--border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.2);--info-bg:#e6f1fb;--info-text:#185fa5;--r-md:8px;--r-lg:12px}
+@media(prefers-color-scheme:dark){:root{--bg:#1e1e1c;--bg2:#2a2a28;--bg3:#323230;--text:#f0efe9;--text2:#a8a8a4;--text3:#6b6b67;--border:rgba(255,255,255,0.12);--border2:rgba(255,255,255,0.22);--info-bg:#0c447c;--info-text:#b5d4f4}}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh}
 .page{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 3rem}
 h1{font-size:20px;font-weight:500;display:flex;align-items:center;gap:8px;margin-bottom:1.25rem}
 .tabs{display:flex;gap:4px;margin-bottom:1.25rem;border-bottom:0.5px solid var(--border)}
 .tab{padding:8px 16px;font-size:13px;cursor:pointer;border:none;background:none;color:var(--text2);border-bottom:2px solid transparent;margin-bottom:-1px}
 .tab.active{color:var(--text);border-bottom-color:var(--text);font-weight:500}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
+.tab-panel{display:none}.tab-panel.active{display:block}
 .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:1.25rem}
 select,input[type=text]{font-size:13px;padding:6px 10px;border:0.5px solid var(--border2);border-radius:var(--r-md);background:var(--bg);color:var(--text);height:34px;outline:none}
 select:focus,input[type=text]:focus{box-shadow:0 0 0 2px var(--info-bg)}
 input[type=text]{width:160px}
 .btn{background:transparent;border:0.5px solid var(--border2);border-radius:var(--r-md);padding:6px 12px;font-size:13px;cursor:pointer;color:var(--text);display:flex;align-items:center;gap:6px;height:34px;white-space:nowrap}
-.btn:hover{background:var(--bg2)}
-.btn:active{transform:scale(0.98)}
+.btn:hover{background:var(--bg2)}.btn:active{transform:scale(0.98)}
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1.25rem}
 .mc{background:var(--bg2);border-radius:var(--r-md);padding:12px 16px}
 .mc-label{font-size:12px;color:var(--text2);margin-bottom:4px}
@@ -45,25 +32,16 @@ input[type=text]{width:160px}
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{background:var(--bg2);font-weight:500;font-size:12px;color:var(--text2);padding:9px 12px;text-align:left;border-bottom:0.5px solid var(--border);white-space:nowrap;user-select:none}
-th.sortable{cursor:pointer}
-th.sortable:hover{color:var(--text)}
+th.sortable{cursor:pointer}th.sortable:hover{color:var(--text)}
 td{padding:9px 12px;border-bottom:0.5px solid var(--border);vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--bg2)}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--bg2)}
 .badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 8px;border-radius:99px}
-.days-ok{background:#eaf3de;color:#3b6d11}
-.days-warn{background:#faeeda;color:#854f0b}
-.days-alert{background:#fcebeb;color:#a32d2d}
-@media(prefers-color-scheme:dark){
-  .days-ok{background:#27500a;color:#c0dd97}
-  .days-warn{background:#633806;color:#fac775}
-  .days-alert{background:#791f1f;color:#f7c1c1}
-}
+.days-ok{background:#eaf3de;color:#3b6d11}.days-warn{background:#faeeda;color:#854f0b}.days-alert{background:#fcebeb;color:#a32d2d}
+@media(prefers-color-scheme:dark){.days-ok{background:#27500a;color:#c0dd97}.days-warn{background:#633806;color:#fac775}.days-alert{background:#791f1f;color:#f7c1c1}}
 .phase-badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:99px;background:var(--info-bg);color:var(--info-text);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .funnel-bar-wrap{width:100%;background:var(--bg2);border-radius:4px;height:6px;overflow:hidden;margin-top:4px}
 .funnel-bar{height:6px;background:var(--info-text);border-radius:4px}
-.f-first td:nth-child(3){color:#185fa5;font-weight:500}
-.f-last td:nth-child(3){color:#3b6d11;font-weight:500}
+.f-first td:nth-child(3){color:#185fa5;font-weight:500}.f-last td:nth-child(3){color:#3b6d11;font-weight:500}
 .status{padding:1.5rem;text-align:center;color:var(--text2);font-size:13px}
 .status.error{color:#a32d2d}
 .empty{padding:2.5rem;text-align:center;color:var(--text2)}
@@ -75,7 +53,6 @@ tr:hover td{background:var(--bg2)}
 <body>
 <div class="page">
 <h1><i class="ti ti-user-check" style="font-size:22px"></i>Náborový tracker</h1>
-
 <div class="tabs">
   <button class="tab active" onclick="switchTab('tracker',this)"><i class="ti ti-list"></i> Aktuální stav</button>
   <button class="tab" onclick="switchTab('funnel',this)"><i class="ti ti-filter"></i> Funnel po kohortách</button>
@@ -156,125 +133,55 @@ tr:hover td{background:var(--bg2)}
 
 <script>
 const SHEET_ID  = '1Uv2FopQw5G9R1zvHaklswL9r_gqSO8RqJZ_vH7LzfQk';
-const GID_HR    = '1690462673';  // HR data
-const GID_NABOR = '1567340540';  // Data nábor
+const GID_HR    = '1690462673';
+const GID_NABOR = '1567340540';
 const csvUrl = gid => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
 const csvNaborUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_NABOR}&tq=${encodeURIComponent('select * where P=1')}`;
-const csvHRUrl = (offset=0) => {
-  const q = encodeURIComponent('select A,C,D limit 9000 offset '+offset);
-  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_HR}&tq=${q}&headers=1`;
-};
+const csvHRUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_HR}&tq=${encodeURIComponent('select A,C,D,H,K')}`;
 
-const FAZE = [
-  'V čekačce',
-  'Čekáme na výběr termínu informační jízdy',
-  'Čeká na informační jízdu',
-  'Informační schůzka OK, čekáme na feedback',
-  'Čekáme na podpis smlouvy',
-  'Čekáme na dokončení online teorie',
-  'Čekáme na výběr termínu první jízdy',
-  'První jízda',
-  'Závěrečný test',
-  'Dokončeno',
-];
-const FAZE_IDX={};
-FAZE.forEach((f,i)=>FAZE_IDX[f.toLowerCase().trim()]=i);
+const FAZE=['V čekačce','Čekáme na výběr termínu informační jízdy','Čeká na informační jízdu','Informační schůzka OK, čekáme na feedback','Čekáme na podpis smlouvy','Čekáme na dokončení online teorie','Čekáme na výběr termínu první jízdy','První jízda','Závěrečný test','Dokončeno'];
+const FAZE_IDX={};FAZE.forEach((f,i)=>FAZE_IDX[f.toLowerCase().trim()]=i);
+const ODPAD=new Set(['ukončen - naše žádost','ukončen','ukončen - vlastní žádost','nemá zájem','nemá zájem - nereaguje','nemá zájem - vlastní žádost','nemáme zájem','ukončen pro neaktivitu']);
 
-const ODPAD=new Set([
-  'ukončen - naše žádost','ukončen','ukončen - vlastní žádost',
-  'nemá zájem','nemá zájem - nereaguje','nemá zájem - vlastní žádost',
-  'nemáme zájem','ukončen pro neaktivitu',
-]);
-
-// CSV parser
-function parseCSVLine(line){
-  const r=[];let cur='',inQ=false;
-  for(let i=0;i<line.length;i++){
-    const c=line[i];
-    if(c==='"'){inQ=!inQ;}
-    else if(c===','&&!inQ){r.push(cur);cur='';}
-    else{cur+=c;}
-  }
-  r.push(cur);return r;
-}
+function parseCSVLine(line){const r=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){inQ=!inQ;}else if(c===','&&!inQ){r.push(cur);cur='';}else{cur+=c;}}r.push(cur);return r;}
 function parseCSV(text){
   const lines=text.trim().split('\n');
   if(lines.length<2)return{header:[],rows:[]};
   const header=parseCSVLine(lines[0]).map(h=>h.trim().toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,''));
   const rows=[];
-  for(let i=1;i<lines.length;i++){
-    const vals=parseCSVLine(lines[i]).map(v=>v.trim());
-    if(!vals.some(v=>v))continue;
-    rows.push(vals);
-  }
+  for(let i=1;i<lines.length;i++){const vals=parseCSVLine(lines[i]).map(v=>v.trim());if(!vals.some(v=>v))continue;rows.push(vals);}
   return{header,rows};
 }
-function colIdx(header,candidates){
-  for(const c of candidates){
-    const i=header.indexOf(c);
-    if(i>=0)return i;
-  }
-  return -1;
-}
+function colIdx(h,candidates){for(const c of candidates){const i=h.indexOf(c);if(i>=0)return i;}return -1;}
 
-// Dates
 function parseCzDate(str){
   if(!str)return null;
-  // Czech date format dd.mm.yyyy
   const m=str.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
   if(m)return new Date(+m[3],+m[2]-1,+m[1]);
-  // Excel serial number (days since 1899-12-30)
   const n=parseFloat(str);
-  if(!isNaN(n)&&n>40000&&n<60000){
-    return new Date(Math.round((n-25569)*86400000));
-  }
-  // Unix timestamp (seconds)
-  if(!isNaN(n)&&n>1000000000&&n<2000000000){
-    return new Date(n*1000);
-  }
-  // ISO / other
+  if(!isNaN(n)&&n>1000000000&&n<2000000000)return new Date(n*1000);
+  if(!isNaN(n)&&n>40000&&n<60000)return new Date(Math.round((n-25569)*86400000));
   const d=new Date(str.replace(' ','T'));
   return isNaN(d)?null:d;
 }
-function daysSince(str){
-  const d=parseCzDate(str);
-  if(!d)return null;
-  return Math.floor((Date.now()-d.getTime())/86400000);
-}
-function formatDate(str){
-  const d=parseCzDate(str);
-  if(!d)return str||'–';
-  return d.toLocaleDateString('cs-CZ',{day:'2-digit',month:'2-digit',year:'numeric'});
-}
+function daysSince(str){const d=parseCzDate(str);if(!d)return null;return Math.floor((Date.now()-d.getTime())/86400000);}
+function formatDate(str){const d=parseCzDate(str);if(!d)return str||'–';return d.toLocaleDateString('cs-CZ',{day:'2-digit',month:'2-digit',year:'numeric'});}
 function getWeekLabel(str){
   let d=parseCzDate(str);
-  if(!d)d=new Date(str);
-  if(!d||isNaN(d))return null;
+  if(!d)return null;
   const utc=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
-  const day=utc.getUTCDay()||7;
-  utc.setUTCDate(utc.getUTCDate()+4-day);
+  const day=utc.getUTCDay()||7;utc.setUTCDate(utc.getUTCDate()+4-day);
   const ys=new Date(Date.UTC(utc.getUTCFullYear(),0,1));
   const week=Math.ceil((((utc-ys)/86400000)+1)/7);
   return utc.getUTCFullYear()+'-T'+String(week).padStart(2,'0');
 }
 
-// Cache
-let cacheHR=null, cacheNabor=null;
+let cacheHR=null,cacheNabor=null;
 async function fetchHR(){
   if(cacheHR)return cacheHR;
-  // Načti HR data po dávkách 9000 řádků
-  let allRows=[];
-  let header=null;
-  for(let offset=0;offset<100000;offset+=9000){
-    const r=await fetch(csvHRUrl(offset));
-    if(!r.ok)throw new Error('HR data: HTTP '+r.status);
-    const parsed=parseCSV(await r.text());
-    if(!parsed.rows.length)break;
-    if(!header)header=parsed.header;
-    allRows=allRows.concat(parsed.rows);
-    if(parsed.rows.length<9000)break;
-  }
-  cacheHR={header:header||[],rows:allRows};
+  const r=await fetch(csvHRUrl());
+  if(!r.ok)throw new Error('HR data: HTTP '+r.status);
+  cacheHR=parseCSV(await r.text());
   return cacheHR;
 }
 async function fetchNabor(){
@@ -285,7 +192,6 @@ async function fetchNabor(){
   return cacheNabor;
 }
 
-// Tabs
 function switchTab(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
@@ -294,7 +200,7 @@ function switchTab(name,el){
   if(name==='funnel'&&!funnelLoaded)loadFunnel();
 }
 
-// ===== TAB 1: TRACKER =====
+// TAB 1
 let allRows=[],sortCol='days',sortDir=-1,funnelLoaded=false;
 
 async function loadTracker(){
@@ -302,70 +208,56 @@ async function loadTracker(){
   msg.style.display='block';msg.className='status';
   msg.innerHTML='<span class="spinner"></span>Načítám data…';
   document.getElementById('tbody').innerHTML='';
-
   try{
     const [hr,nabor]=await Promise.all([fetchHR(),fetchNabor()]);
 
-    // Z Data nábor: courier_id → {state, date, wh} kde is_max_state=1
-    const nh=nabor.header;
-    const nCourier = colIdx(nh,['courier_id']);
-    const nState   = colIdx(nh,['state_id']); // state_id obsahuje text fáze, state je číslo
-    const nDate    = colIdx(nh,['timestamp']); // Date je vzorec, timestamp je Unix seconds
-    const nWH      = colIdx(nh,['wh']);
-    // is max state all = index 15 (druhý výskyt), je 1 pokud je to aktuálně poslední stav uchazeče
-    console.log('Header Data nábor:', nh);
-    console.log('Celkem řádků:', nabor.rows.length);
-    if(nabor.rows.length>0)console.log('Řádek 1:', nabor.rows[0]);
-    const nIsMaxAll = nh.lastIndexOf('is_max_state');
-    console.log('nIsMax index:', nIsMaxAll, 'hodnota řádek1:', nabor.rows[0]?nabor.rows[0][nIsMaxAll]:'?');
-    const nIsMax    = nIsMaxAll >= 0 ? nIsMaxAll : colIdx(nh,['is_max_state']);
-
-    // Mapa courier_id → aktuální stav z Data nábor
-    const naborMap={};
-    nabor.rows.forEach(r=>{
-      const isMax=nIsMax>=0?r[nIsMax]:'';
-      if(isMax!=='1'&&isMax!=='TRUE'&&isMax!=='true')return;
-      const cid=nCourier>=0?r[nCourier]:'';
-      if(!cid)return;
-      naborMap[cid]={
-        state: nState>=0?r[nState]:'',
-        date:  nDate>=0?r[nDate]:'',
-        wh:    nWH>=0?r[nWH]:''
-      };
-    });
-
-    // Z HR data: hiring_id, surname, name (pro jména)
+    // HR data: hiring_id(A), surname(C), name(D), hiring_location(H), state_desc(K)
     const hh=hr.header;
-    const hId   =colIdx(hh,['hiring_id']);
-    const hSur  =colIdx(hh,['surname']);
-    const hName =colIdx(hh,['name']);
+    const hId   =colIdx(hh,['hiring_id','a']);
+    const hSur  =colIdx(hh,['surname','c']);
+    const hName =colIdx(hh,['name','d']);
+    const hLoc  =colIdx(hh,['hiring_location','h']);
+    const hState=colIdx(hh,['state_desc','k']);
+
+    // Data nábor: courier_id → timestamp (aktuální stav)
+    const nh=nabor.header;
+    const nCourier =colIdx(nh,['courier_id']);
+    const nTimestamp=colIdx(nh,['timestamp']);
+    const nStateId  =colIdx(nh,['state_id']);
+
+    // Mapa courier_id → timestamp z Data nábor
+    const tsMap={};
+    nabor.rows.forEach(r=>{
+      const cid=nCourier>=0?r[nCourier]:'';
+      const ts =nTimestamp>=0?r[nTimestamp]:'';
+      if(cid&&ts)tsMap[cid]=ts;
+    });
 
     // Deduplikace HR podle hiring_id
-    const seenHR=new Set();
-    const hrDedup=hr.rows.filter(r=>{
-      const id=hId>=0?r[hId]:'';
-      if(!id||seenHR.has(id))return false;
-      seenHR.add(id);return true;
-    });
-
+    const seen=new Set();
     allRows=[];
-    hrDedup.forEach(r=>{
-      const id  =hId>=0?r[hId]:'';
-      const sur =hSur>=0?r[hSur]:'';
-      const name=hName>=0?r[hName]:'';
-      const n=naborMap[id];
-      if(!n)return;
-      const state=n.state.toLowerCase().trim();
+    hr.rows.forEach(r=>{
+      const id   =hId>=0?r[hId]:'';
+      if(!id||seen.has(id))return;
+      seen.add(id);
+      const state=(hState>=0?r[hState]:'').toLowerCase().trim();
       if(ODPAD.has(state)||state==='dokončeno'||state==='duplicita')return;
       if(FAZE_IDX[state]===undefined)return;
-      const days=daysSince(n.date);
-      allRows.push({id,surname:sur,name,location:n.wh,phase:n.state,since:n.date,days});
+      const since=tsMap[id]||'';
+      allRows.push({
+        id,
+        surname:hSur>=0?r[hSur]:'',
+        name:hName>=0?r[hName]:'',
+        location:hLoc>=0?r[hLoc]:'',
+        phase:hState>=0?r[hState]:'',
+        since,
+        days:since?daysSince(since):null
+      });
     });
 
-    populateTrackerFilters();
-    renderTracker();
+    populateTrackerFilters();renderTracker();
     msg.style.display='none';
-    document.getElementById('footer').textContent='Poslední aktualizace: '+new Date().toLocaleString('cs-CZ')+' | HR řádků: '+hr.rows.length+' | Nábor řádků: '+nabor.rows.length+' | nIsMax: '+nIsMax+' | allRows: '+allRows.length;
+    document.getElementById('footer').textContent='Poslední aktualizace: '+new Date().toLocaleString('cs-CZ')+' | Celkem: '+allRows.length;
   }catch(e){
     msg.className='status error';
     msg.innerHTML='<i class="ti ti-alert-circle" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>Chyba: '+e.message;
@@ -377,15 +269,14 @@ function daysClass(n){if(n===null)return'';if(n<=7)return'days-ok';if(n<=14)retu
 function populateTrackerFilters(){
   const locs=[...new Set(allRows.map(r=>r.location).filter(Boolean))].sort();
   const phases=[...new Set(allRows.map(r=>r.phase).filter(Boolean))].sort();
-  const fLoc=document.getElementById('fLoc');
-  const fPhase=document.getElementById('fPhase');
+  const fLoc=document.getElementById('fLoc'),fPhase=document.getElementById('fPhase');
   const cL=fLoc.value,cP=fPhase.value;
   fLoc.innerHTML='<option value="">Všechny lokality</option>'+locs.map(l=>`<option>${l}</option>`).join('');
   fPhase.innerHTML='<option value="">Všechny fáze</option>'+phases.map(p=>`<option>${p}</option>`).join('');
   fLoc.value=cL;fPhase.value=cP;
 }
 
-function getFilteredTracker(){
+function getFiltered(){
   const q=document.getElementById('search').value.toLowerCase();
   const loc=document.getElementById('fLoc').value;
   const phase=document.getElementById('fPhase').value;
@@ -402,7 +293,7 @@ function getFilteredTracker(){
 }
 
 function renderTracker(){
-  const filtered=getFilteredTracker();
+  const filtered=getFiltered();
   const sorted=[...filtered].sort((a,b)=>{
     let av=a[sortCol],bv=b[sortCol];
     if(sortCol==='days'){av=av??-1;bv=bv??-1;}
@@ -418,7 +309,6 @@ function renderTracker(){
     <td style="color:var(--text2);font-size:12px">${formatDate(r.since)}</td>
     <td><span class="badge ${daysClass(r.days)}">${r.days!==null?r.days+' d':'–'}</span></td>
   </tr>`).join(''):'<tr><td colspan="6" class="empty">Žádní uchazeči neodpovídají filtru.</td></tr>';
-
   const a15=filtered.filter(r=>r.days!==null&&r.days>=15).length;
   const dArr=filtered.filter(r=>r.days!==null).map(r=>r.days);
   const avg=dArr.length?Math.round(dArr.reduce((s,v)=>s+v,0)/dArr.length):null;
@@ -442,22 +332,19 @@ document.querySelectorAll('th.sortable').forEach(th=>{
 });
 document.getElementById('btnRefresh').addEventListener('click',()=>{cacheHR=null;cacheNabor=null;loadTracker();});
 
-// ===== TAB 2: FUNNEL =====
-// Funnel používá HR data pro created_at (kohortu) + Data nábor pro aktuální stav
+// TAB 2: FUNNEL
 let funnelRows=[];
-
 async function loadFunnel(){
   const msg=document.getElementById('funnelStatus');
   msg.style.display='block';msg.className='status';
   msg.innerHTML='<span class="spinner"></span>Načítám data…';
-
   try{
     const [hr,nabor]=await Promise.all([fetchHR(),fetchNabor()]);
 
-    // HR data: hiring_id → created_at
+    // HR: hiring_id → created_at
     const hh=hr.header;
-    const hId  =colIdx(hh,['hiring_id']);
-    const hCr  =colIdx(hh,['created_at']);
+    const hId=colIdx(hh,['hiring_id','a']);
+    const hCr=colIdx(hh,['created_at']);
 
     const createdMap={};
     const seenHR=new Set();
@@ -465,55 +352,44 @@ async function loadFunnel(){
       const id=hId>=0?r[hId]:'';
       if(!id||seenHR.has(id))return;
       seenHR.add(id);
-      createdMap[id]=hCr>=0?r[hCr]:'';
+      if(hCr>=0)createdMap[id]=r[hCr];
     });
 
-    // Data nábor: courier_id, is_max_state, state, wh
+    // Data nábor: courier_id, state_id, wh, is_max_state
     const nh=nabor.header;
     const nCourier=colIdx(nh,['courier_id']);
     const nState  =colIdx(nh,['state_id']);
     const nWH     =colIdx(nh,['wh']);
     const nIsMax  =nh.lastIndexOf('is_max_state');
 
-    const sklady=new Set();
-    const tydny=new Set();
+    const sklady=new Set(),tydny=new Set();
     funnelRows=[];
-
-    // Deduplikace Data nábor – jen is_max_state=1 a jeden záznam per courier_id
     const seenN=new Set();
+
     nabor.rows.forEach(r=>{
       const isMax=nIsMax>=0?r[nIsMax]:'';
-      if(isMax!=='1'&&isMax!=='TRUE'&&isMax!=='true')return;
+      if(isMax!=='1')return;
       const cid=nCourier>=0?r[nCourier]:'';
       if(!cid||seenN.has(cid))return;
       seenN.add(cid);
-
       const state=(nState>=0?r[nState]:'').toLowerCase().trim();
       if(state==='duplicita')return;
-
       const wh=nWH>=0?r[nWH]:'';
       const created=createdMap[cid]||'';
       if(!created)return;
-
       const tyden=getWeekLabel(created);
       if(!tyden)return;
-
-      sklady.add(wh);
-      tydny.add(tyden);
+      sklady.add(wh);tydny.add(tyden);
       funnelRows.push({wh,state,tyden});
     });
 
     const skladList=[...sklady].sort();
     const tydenList=[...tydny].sort().reverse();
-
     const fSklad=document.getElementById('fSklad');
     const fTyden=document.getElementById('fTyden');
     fSklad.innerHTML='<option value="">Všechny sklady</option>'+skladList.map(s=>`<option>${s}</option>`).join('');
     fTyden.innerHTML=tydenList.map(t=>`<option>${t}</option>`).join('');
-
-    msg.style.display='none';
-    funnelLoaded=true;
-    renderFunnel();
+    msg.style.display='none';funnelLoaded=true;renderFunnel();
   }catch(e){
     msg.className='status error';
     msg.innerHTML='<i class="ti ti-alert-circle" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>Chyba: '+e.message;
@@ -527,18 +403,11 @@ function renderFunnel(){
   const celkem=kohorta.length;
   const odpadCount=kohorta.filter(u=>ODPAD.has(u.state)).length;
   const doneCount=kohorta.filter(u=>u.state==='dokončeno').length;
-  const aktivni=celkem-odpadCount-doneCount;
-
   document.getElementById('fmKohorta').textContent=celkem;
-  document.getElementById('fmAktivni').textContent=aktivni;
+  document.getElementById('fmAktivni').textContent=celkem-odpadCount-doneCount;
   document.getElementById('fmOdpad').textContent=odpadCount;
   document.getElementById('fmDone').textContent=doneCount;
-
-  const counts=FAZE.map((_,fi)=>kohorta.filter(u=>{
-    const idx=FAZE_IDX[u.state];
-    return idx!==undefined&&idx>=fi;
-  }).length);
-
+  const counts=FAZE.map((_,fi)=>kohorta.filter(u=>{const idx=FAZE_IDX[u.state];return idx!==undefined&&idx>=fi;}).length);
   const vstup=counts[0]||1;
   document.getElementById('funnelBody').innerHTML=FAZE.map((faze,i)=>{
     const count=counts[i];
@@ -547,19 +416,9 @@ function renderFunnel(){
     const odpad=i===0?odpadCount:counts[i-1]-counts[i];
     const barW=Math.round(count/vstup*100);
     const rc=i===0?'f-first':i===FAZE.length-1?'f-last':'';
-    return`<tr class="${rc}">
-      <td style="color:var(--text2)">${i+1}</td>
-      <td>${faze}</td>
-      <td>${count}</td>
-      <td style="color:var(--text2)">${pctV}</td>
-      <td style="color:var(--text2)">${pctP}</td>
-      <td style="color:#a32d2d">${odpad>0?'−'+odpad:''}</td>
-      <td><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${barW}%"></div></div></td>
-    </tr>`;
+    return`<tr class="${rc}"><td style="color:var(--text2)">${i+1}</td><td>${faze}</td><td>${count}</td><td style="color:var(--text2)">${pctV}</td><td style="color:var(--text2)">${pctP}</td><td style="color:#a32d2d">${odpad>0?'−'+odpad:''}</td><td><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${barW}%"></div></div></td></tr>`;
   }).join('');
-
-  document.getElementById('funnelFooter').textContent=
-    `Sklad: ${sklad||'Všechny'} | Týden: ${tyden} | Kohorta: ${celkem} | ${new Date().toLocaleString('cs-CZ')}`;
+  document.getElementById('funnelFooter').textContent=`Sklad: ${sklad||'Všechny'} | Týden: ${tyden} | Kohorta: ${celkem} | ${new Date().toLocaleString('cs-CZ')}`;
 }
 
 document.getElementById('fSklad').addEventListener('change',renderFunnel);
