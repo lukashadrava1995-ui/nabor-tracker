@@ -254,7 +254,9 @@ async function loadTracker(){
 
     populateTrackerFilters();renderTracker();
     msg.style.display='none';
-    document.getElementById('footer').textContent='Poslední aktualizace: '+new Date().toLocaleString('cs-CZ')+' | Celkem: '+allRows.length;
+    const tsCount=Object.keys(tsMap).length;
+    const withDate=allRows.filter(r=>r.since).length;
+    document.getElementById('footer').textContent='Aktualizace: '+new Date().toLocaleString('cs-CZ')+' | Uchazeči: '+allRows.length+' | tsMap: '+tsCount+' | S datumem: '+withDate+' | nId:'+nId+' nTs:'+nTimestamp;
   }catch(e){
     msg.className='status error';
     msg.innerHTML='<i class="ti ti-alert-circle" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>Chyba: '+e.message;
