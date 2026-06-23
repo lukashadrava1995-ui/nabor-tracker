@@ -224,8 +224,6 @@ async function loadTracker(){
     const tsMap={};
     const seenN=new Set();
     nabor.rows.forEach(r=>{
-      const isMax=nIsMax>=0?r[nIsMax]:'';
-      if(isMax!=='1')return;
       const cid=nId>=0?r[nId].replace('.0',''):'';
       const ts =nTimestamp>=0?r[nTimestamp]:'';
       if(cid&&ts&&!seenN.has(cid)){seenN.add(cid);tsMap[cid]=ts;}
