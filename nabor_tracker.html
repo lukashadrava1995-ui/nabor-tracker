@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Náborový tracker</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #ffffff; --bg2: #f5f5f3; --bg3: #eeede9;
+    --text: #1a1a18; --text2: #6b6b67; --text3: #9b9b97;
+    --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.2);
+    --info-bg: #e6f1fb; --info-text: #185fa5;
+    --r-md: 8px; --r-lg: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1e1e1c; --bg2: #2a2a28; --bg3: #323230;
+      --text: #f0efe9; --text2: #a8a8a4; --text3: #6b6b67;
+      --border: rgba(255,255,255,0.12); --border2: rgba(255,255,255,0.22);
+      --info-bg: #0c447c; --info-text: #b5d4f4;
+    }
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  .top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .top h1 { font-size: 20px; font-weight: 500; flex: 1; min-width: 180px; display: flex; align-items: center; gap: 8px; }
+  .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  select, input[type=text] {
+    font-size: 13px; padding: 6px 10px; border: 0.5px solid var(--border2);
+    border-radius: var(--r-md); background: var(--bg); color: var(--text); height: 34px;
+    outline: none;
+  }
+  select:focus, input[type=text]:focus { box-shadow: 0 0 0 2px var(--info-bg); }
+  input[type=text] { width: 160px; }
+  .btn {
+    background: transparent; border: 0.5px solid var(--border2); border-radius: var(--r-md);
+    padding: 6px 12px; font-size: 13px; cursor: pointer; color: var(--text);
+    display: flex; align-items: center; gap: 6px; height: 34px; white-space: nowrap;
+  }
+  .btn:hover { background: var(--bg2); }
+  .btn:active { transform: scale(0.98); }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 1.25rem; }
+  .mc { background: var(--bg2); border-radius: var(--r-md); padding: 12px 16px; }
+  .mc-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+  .mc-val { font-size: 24px; font-weight: 500; }
+  .mc-alert .mc-val { color: #a32d2d; }
+  @media (prefers-color-scheme: dark) { .mc-alert .mc-val { color: #f7c1c1; } }
+  .card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    background: var(--bg2); font-weight: 500; font-size: 12px; color: var(--text2);
+    padding: 9px 12px; text-align: left; border-bottom: 0.5px solid var(--border);
+    white-space: nowrap; user-select: none;
+  }
+  th.sortable { cursor: pointer; }
+  th.sortable:hover { color: var(--text); }
+  td { padding: 9px 12px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg2); }
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 500;
+    padding: 3px 8px; border-radius: 99px; white-space: nowrap;
+  }
+  .days-ok  { background: #eaf3de; color: #3b6d11; }
+  .days-warn{ background: #faeeda; color: #854f0b; }
+  .days-alert{ background: #fcebeb; color: #a32d2d; }
+  @media (prefers-color-scheme: dark) {
+    .days-ok  { background: #27500a; color: #c0dd97; }
+    .days-warn{ background: #633806; color: #fac775; }
+    .days-alert{ background: #791f1f; color: #f7c1c1; }
+  }
+  .phase-badge {
+    display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 99px;
+    background: var(--info-bg); color: var(--info-text);
+    max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .id-cell { color: var(--text2); font-size: 12px; }
+  .name-cell { font-weight: 500; }
+  .loc-cell { color: var(--text2); }
+  .since-cell { color: var(--text2); font-size: 12px; }
+  .status { padding: 1.5rem; text-align: center; color: var(--text2); font-size: 13px; }
+  .status.error { color: #a32d2d; }
+  .empty { padding: 2.5rem; text-align: center; color: var(--text2); }
+  .footer { margin-top: 1rem; font-size: 12px; color: var(--text3); text-align: right; }
+  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--border2); border-top-color: var(--info-text); border-radius: 50%; animation: spin .7s linear infinite; vertical-align: -2px; margin-right: 6px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .sort-icon { opacity: 0.4; margin-left: 3px; }
+  th.active .sort-icon { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top">
+    <h1><i class="ti ti-user-check" style="font-size:22px"></i>Náborový tracker</h1>
+    <div class="controls">
+      <input type="text" id="search" placeholder="Hledat jméno…">
+      <select id="fLoc"><option value="">Všechny lokality</option></select>
+      <select id="fPhase"><option value="">Všechny fáze</option></select>
+      <select id="fDays">
+        <option value="">Všechny délky</option>
+        <option value="ok">Do 7 dní</option>
+        <option value="warn">8–14 dní</option>
+        <option value="alert">15+ dní</option>
+      </select>
+      <button class="btn" id="btnRefresh"><i class="ti ti-refresh"></i>Aktualizovat</button>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="mc"><div class="mc-label">Celkem uchazečů</div><div class="mc-val" id="mTotal">–</div></div>
+    <div class="mc"><div class="mc-label">Průměr dní ve fázi</div><div class="mc-val" id="mAvg">–</div></div>
+    <div class="mc mc-alert"><div class="mc-label">15+ dní (alert)</div><div class="mc-val" id="mAlert">–</div></div>
+    <div class="mc"><div class="mc-label">Lokalit</div><div class="mc-val" id="mLoc">–</div></div>
+  </div>
+
+  <div class="card">
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:70px">ID</th>
+            <th class="sortable active" id="sortName" data-col="surname" style="width:150px">Příjmení <i class="ti ti-arrows-sort sort-icon"></i></th>
+            <th class="sortable" id="sortLoc" data-col="location" style="width:110px">Lokalita <i class="ti ti-arrows-sort sort-icon"></i></th>
+            <th style="min-width:200px">Fáze</th>
+            <th class="sortable" id="sortSince" data-col="since" style="width:130px">Ve stavu od <i class="ti ti-arrows-sort sort-icon"></i></th>
+            <th class="sortable" id="sortDays" data-col="days" style="width:75px">Dní <i class="ti ti-arrows-sort sort-icon"></i></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div id="statusMsg" class="status" style="display:none"></div>
+  </div>
+
+  <div class="footer" id="footer"></div>
+</div>
+
+<script>
+const SHEET_ID = '1Uv2FopQw5G9R1zvHaklswL9r_gqSO8RqJZ_vH7LzfQk';
+const GID = '1806019788';
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+let allRows = [];
+let sortCol = 'days';
+let sortDir = -1;
+
+function parseCSVLine(line) {
+  const result = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  const header = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase()
+    .replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,''));
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const vals = parseCSVLine(lines[i]);
+    if (!vals.some(v => v.trim())) continue;
+    const obj = {};
+    header.forEach((h, idx) => obj[h] = (vals[idx] || '').trim());
+    rows.push(obj);
+  }
+  return rows;
+}
+
+function getField(row, candidates) {
+  for (const c of candidates) {
+    if (row[c] !== undefined) return c;
+  }
+  return null;
+}
+
+function parseCzDate(str) {
+  if (!str) return null;
+  const m = str.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+  if (m) return new Date(+m[3], +m[2]-1, +m[1]);
+  const d = new Date(str.replace(' ', 'T'));
+  return isNaN(d) ? null : d;
+}
+
+function daysSince(str) {
+  const d = parseCzDate(str);
+  if (!d) return null;
+  return Math.floor((Date.now() - d.getTime()) / 86400000);
+}
+
+function formatDate(str) {
+  const d = parseCzDate(str);
+  if (!d) return str || '–';
+  return d.toLocaleDateString('cs-CZ', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+function daysClass(n) {
+  if (n === null) return '';
+  if (n <= 7) return 'days-ok';
+  if (n <= 14) return 'days-warn';
+  return 'days-alert';
+}
+
+async function loadData() {
+  const msg = document.getElementById('statusMsg');
+  const tbody = document.getElementById('tbody');
+  msg.style.display = 'block';
+  msg.className = 'status';
+  msg.innerHTML = '<span class="spinner"></span>Načítám data ze Sheets…';
+  tbody.innerHTML = '';
+
+  try {
+    const resp = await fetch(CSV_URL);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const text = await resp.text();
+    const raw = parseCSV(text);
+    if (!raw.length) throw new Error('Prázdná tabulka nebo chyba parsování.');
+
+    const fId     = getField(raw[0], ['hiring_id','id','hiring_i']);
+    const fSur    = getField(raw[0], ['surname','pjmen','prijmen']);
+    const fName   = getField(raw[0], ['name','jmno']);
+    const fLoc    = getField(raw[0], ['hiring_location','lokalita','location']);
+    const fState  = getField(raw[0], ['state_desc','fze','stav','state']);
+    const fSince  = getField(raw[0], ['ve_stavu_od','vestavu_od','since','datum']);
+
+    allRows = raw.filter(r => r[fSur] || r[fName]).map(r => ({
+      id:       r[fId]    || '',
+      surname:  r[fSur]   || '',
+      name:     r[fName]  || '',
+      location: r[fLoc]   || '',
+      phase:    r[fState] || '',
+      since:    r[fSince] || '',
+      days:     daysSince(r[fSince])
+    }));
+
+    populateFilters();
+    render();
+    msg.style.display = 'none';
+    document.getElementById('footer').textContent =
+      'Poslední aktualizace: ' + new Date().toLocaleString('cs-CZ');
+  } catch(e) {
+    msg.className = 'status error';
+    msg.innerHTML = '<i class="ti ti-alert-circle" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>' +
+      'Nepodařilo se načíst data. Zkontroluj sdílení listu (Kdokoli s odkazem → Zobrazovatel).<br>' +
+      '<small style="opacity:.7">' + e.message + '</small>';
+  }
+}
+
+function populateFilters() {
+  const locs   = [...new Set(allRows.map(r => r.location).filter(Boolean))].sort();
+  const phases = [...new Set(allRows.map(r => r.phase).filter(Boolean))].sort();
+  const fLoc   = document.getElementById('fLoc');
+  const fPhase = document.getElementById('fPhase');
+  const curLoc = fLoc.value, curPhase = fPhase.value;
+  fLoc.innerHTML   = '<option value="">Všechny lokality</option>'   + locs.map(l => `<option>${l}</option>`).join('');
+  fPhase.innerHTML = '<option value="">Všechny fáze</option>' + phases.map(p => `<option>${p}</option>`).join('');
+  fLoc.value = curLoc; fPhase.value = curPhase;
+}
+
+function getFiltered() {
+  const q     = document.getElementById('search').value.toLowerCase();
+  const loc   = document.getElementById('fLoc').value;
+  const phase = document.getElementById('fPhase').value;
+  const days  = document.getElementById('fDays').value;
+  return allRows.filter(r => {
+    if (q     && !(r.surname+' '+r.name).toLowerCase().includes(q)) return false;
+    if (loc   && r.location !== loc)   return false;
+    if (phase && r.phase    !== phase) return false;
+    if (days === 'ok'   && !(r.days !== null && r.days <=  7)) return false;
+    if (days === 'warn' && !(r.days !== null && r.days >=  8 && r.days <= 14)) return false;
+    if (days === 'alert'&& !(r.days !== null && r.days >= 15)) return false;
+    return true;
+  });
+}
+
+function render() {
+  const filtered = getFiltered();
+  const sorted = [...filtered].sort((a, b) => {
+    let av = a[sortCol], bv = b[sortCol];
+    if (sortCol === 'days')  { av = av ?? -1; bv = bv ?? -1; }
+    if (sortCol === 'since') { av = parseCzDate(av)||0; bv = parseCzDate(bv)||0; }
+    return av < bv ? sortDir : av > bv ? -sortDir : 0;
+  });
+
+  const tbody = document.getElementById('tbody');
+  if (!sorted.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty">Žádní uchazeči neodpovídají filtru.</td></tr>';
+  } else {
+    tbody.innerHTML = sorted.map(r => `
+      <tr>
+        <td class="id-cell">${r.id}</td>
+        <td class="name-cell">${r.surname}${r.name ? ' ' + r.name : ''}</td>
+        <td class="loc-cell">${r.location || '–'}</td>
+        <td><span class="phase-badge" title="${r.phase}">${r.phase || '–'}</span></td>
+        <td class="since-cell">${formatDate(r.since)}</td>
+        <td><span class="badge ${daysClass(r.days)}">${r.days !== null ? r.days + ' d' : '–'}</span></td>
+      </tr>`).join('');
+  }
+
+  const alert15 = filtered.filter(r => r.days !== null && r.days >= 15).length;
+  const dArr    = filtered.filter(r => r.days !== null).map(r => r.days);
+  const avg     = dArr.length ? Math.round(dArr.reduce((s,v) => s+v, 0) / dArr.length) : null;
+  const locs    = new Set(filtered.map(r => r.location).filter(Boolean));
+  document.getElementById('mTotal').textContent = filtered.length;
+  document.getElementById('mAvg').textContent   = avg !== null ? avg : '–';
+  document.getElementById('mAlert').textContent = alert15;
+  document.getElementById('mLoc').textContent   = locs.size;
+}
+
+['search','fLoc','fPhase','fDays'].forEach(id => {
+  document.getElementById(id).addEventListener('input',  render);
+  document.getElementById(id).addEventListener('change', render);
+});
+
+document.querySelectorAll('th.sortable').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.col;
+    if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = -1; }
+    document.querySelectorAll('th.sortable').forEach(t => t.classList.remove('active'));
+    th.classList.add('active');
+    render();
+  });
+});
+
+document.getElementById('btnRefresh').addEventListener('click', loadData);
+
+loadData();
+</script>
+</body>
+</html>
