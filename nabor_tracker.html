@@ -221,14 +221,14 @@ async function loadTracker(){
 
     // Data nábor: courier_id → timestamp (aktuální stav)
     const nh=nabor.header;
-    const nCourier =colIdx(nh,['courier_id']);
+    const nId       =colIdx(nh,['id']);
     const nTimestamp=colIdx(nh,['timestamp']);
     const nStateId  =colIdx(nh,['state_id']);
 
     // Mapa courier_id → timestamp z Data nábor
     const tsMap={};
     nabor.rows.forEach(r=>{
-      const cid=nCourier>=0?r[nCourier]:'';
+      const cid=nId>=0?r[nId]:'';
       const ts =nTimestamp>=0?r[nTimestamp]:'';
       if(cid&&ts)tsMap[cid]=ts;
     });
@@ -357,7 +357,7 @@ async function loadFunnel(){
 
     // Data nábor: courier_id, state_id, wh, is_max_state
     const nh=nabor.header;
-    const nCourier=colIdx(nh,['courier_id']);
+    const nCourier=colIdx(nh,['id']);
     const nState  =colIdx(nh,['state_id']);
     const nWH     =colIdx(nh,['wh']);
     const nIsMax  =nh.lastIndexOf('is_max_state');
