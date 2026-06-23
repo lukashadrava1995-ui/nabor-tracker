@@ -294,11 +294,15 @@ async function loadTracker(){
     // Z Data nábor: courier_id → {state, date, wh} kde is_max_state=1
     const nh=nabor.header;
     const nCourier = colIdx(nh,['courier_id']);
-    const nState   = colIdx(nh,['state']);
+    const nState   = colIdx(nh,['state_id']); // state_id obsahuje text fáze, state je číslo
     const nDate    = colIdx(nh,['date']);
     const nWH      = colIdx(nh,['wh']);
     // is max state all = index 15 (druhý výskyt), je 1 pokud je to aktuálně poslední stav uchazeče
+    console.log('Header Data nábor:', nh);
+    console.log('Celkem řádků:', nabor.rows.length);
+    if(nabor.rows.length>0)console.log('Řádek 1:', nabor.rows[0]);
     const nIsMaxAll = nh.lastIndexOf('is_max_state');
+    console.log('nIsMax index:', nIsMaxAll, 'hodnota řádek1:', nabor.rows[0]?nabor.rows[0][nIsMaxAll]:'?');
     const nIsMax    = nIsMaxAll >= 0 ? nIsMaxAll : colIdx(nh,['is_max_state']);
 
     // Mapa courier_id → aktuální stav z Data nábor
@@ -452,7 +456,7 @@ async function loadFunnel(){
     // Data nábor: courier_id, is_max_state, state, wh
     const nh=nabor.header;
     const nCourier=colIdx(nh,['courier_id']);
-    const nState  =colIdx(nh,['state']);
+    const nState  =colIdx(nh,['state_id']);
     const nWH     =colIdx(nh,['wh']);
     const nIsMax  =nh.lastIndexOf('is_max_state');
 
