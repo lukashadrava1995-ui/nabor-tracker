@@ -297,7 +297,9 @@ async function loadTracker(){
     const nState   = colIdx(nh,['state']);
     const nDate    = colIdx(nh,['date']);
     const nWH      = colIdx(nh,['wh']);
-    const nIsMax   = colIdx(nh,['is_max_state']);
+    // is max state all = index 15 (druhý výskyt), je 1 pokud je to aktuálně poslední stav uchazeče
+    const nIsMaxAll = nh.lastIndexOf('is_max_state');
+    const nIsMax    = nIsMaxAll >= 0 ? nIsMaxAll : colIdx(nh,['is_max_state']);
 
     // Mapa courier_id → aktuální stav z Data nábor
     const naborMap={};
@@ -452,7 +454,7 @@ async function loadFunnel(){
     const nCourier=colIdx(nh,['courier_id']);
     const nState  =colIdx(nh,['state']);
     const nWH     =colIdx(nh,['wh']);
-    const nIsMax  =colIdx(nh,['is_max_state']);
+    const nIsMax  =nh.lastIndexOf('is_max_state');
 
     const sklady=new Set();
     const tydny=new Set();
