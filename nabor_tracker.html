@@ -315,7 +315,16 @@ async function loadTracker(){
     const locIdx  =hr._header.findIndex(h=>h==='hiring_location');
     const stateIdx=hr._header.findIndex(h=>h==='state_desc');
 
-    allRows=rawHR.filter(r=>{
+    // Deduplikace – ponecháme poslední výskyt pro každé hiring_id
+    const seen=new Set();
+    const dedup=([...rawHR]).reverse().filter(r=>{
+      const id=idIdx>=0?r._vals[idIdx]:'';
+      const key=id||(surIdx>=0?r._vals[surIdx]:'')+' '+(nameIdx>=0?r._vals[nameIdx]:'');
+      if(!key||seen.has(key))return false;
+      seen.add(key);return true;
+    });
+
+    allRows=dedup.filter(r=>{
       if(!(r._vals[surIdx]||r._vals[nameIdx]))return false;
       const state=(r._vals[stateIdx]||'').toLowerCase().trim();
       if(ODPAD.has(state)||state==='dokončeno')return false;
