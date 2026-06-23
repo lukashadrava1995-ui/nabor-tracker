@@ -437,12 +437,13 @@ async function loadFunnel(){
     const tydny=new Set();
     funnelData=[];
 
-    // Deduplikace podle hiring_id – ponecháme poslední výskyt
+    // Deduplikace – ponecháme poslední výskyt pro každé hiring_id
     const seenIds = new Set();
     const dedupHR = [...rawHR].reverse().filter(r => {
       const id = idIdx >= 0 ? r._vals[idIdx] : '';
-      if (!id || seenIds.has(id)) return false;
-      seenIds.add(id);
+      const key = id || (surIdx >= 0 ? r._vals[surIdx] : '') + '_' + (nameIdx >= 0 ? r._vals[nameIdx] : '');
+      if (!key || seenIds.has(key)) return false;
+      seenIds.add(key);
       return true;
     });
 
