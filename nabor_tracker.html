@@ -318,7 +318,7 @@ async function loadTracker(){
     allRows=rawHR.filter(r=>{
       if(!(r._vals[surIdx]||r._vals[nameIdx]))return false;
       const state=(r._vals[stateIdx]||'').toLowerCase().trim();
-      if(ODPAD.has(state)||state==='duplicita'||state==='dokončeno')return false;
+      if(ODPAD.has(state)||state==='dokončeno')return false;
       return FAZE_IDX[state]!==undefined;
     }).map(r=>{
       const id=idIdx>=0?r._vals[idIdx]:'';
@@ -437,11 +437,20 @@ async function loadFunnel(){
     const tydny=new Set();
     funnelData=[];
 
-    rawHR.forEach(r=>{
+    // Deduplikace podle hiring_id – ponecháme poslední výskyt
+    const seenIds = new Set();
+    const dedupHR = [...rawHR].reverse().filter(r => {
+      const id = idIdx >= 0 ? r._vals[idIdx] : '';
+      if (!id || seenIds.has(id)) return false;
+      seenIds.add(id);
+      return true;
+    });
+
+    dedupHR.forEach(r=>{
       const loc  =locIdx>=0?r._vals[locIdx]:'';
       const state=(stateIdx>=0?r._vals[stateIdx]:'').toLowerCase().trim();
       const cr   =crIdx>=0?r._vals[crIdx]:'';
-      if(!loc||!cr||state==='duplicita')return;
+      if(!loc||!cr)return;
       const tyden=getWeekLabel(cr);
       if(!tyden)return;
       sklady.add(loc);
