@@ -159,6 +159,7 @@ const SHEET_ID  = '1Uv2FopQw5G9R1zvHaklswL9r_gqSO8RqJZ_vH7LzfQk';
 const GID_HR    = '1690462673';  // HR data
 const GID_NABOR = '1567340540';  // Data nábor
 const csvUrl = gid => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
+const csvNaborUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_NABOR}&tq=${encodeURIComponent('select * where P=1')}`;
 
 const FAZE = [
   'V čekačce',
@@ -264,7 +265,7 @@ async function fetchHR(){
 }
 async function fetchNabor(){
   if(cacheNabor)return cacheNabor;
-  const r=await fetch(csvUrl(GID_NABOR));
+  const r=await fetch(csvNaborUrl());
   if(!r.ok)throw new Error('Data nábor: HTTP '+r.status);
   cacheNabor=parseCSV(await r.text());
   return cacheNabor;
