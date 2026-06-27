@@ -136,8 +136,8 @@ const SHEET_ID  = '1Uv2FopQw5G9R1zvHaklswL9r_gqSO8RqJZ_vH7LzfQk';
 const GID_HR    = '1690462673';
 const GID_NABOR = '1567340540';
 const csvUrl = gid => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
-const csvNaborUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_NABOR}&tq=${encodeURIComponent('select A,max(D) where A > 50000 group by A order by A desc')}`;
-const csvHRUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_HR}&tq=${encodeURIComponent('select A,C,D,H,K')}`;
+const csvNaborUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_NABOR}&tq=${encodeURIComponent('select B,I,avg(D) group by B,I')}`;
+const csvHRUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_HR}&tq=${encodeURIComponent('select A,C,D,G,H,J,K')}`;
 
 const FAZE=['V čekačce','Čekáme na výběr termínu informační jízdy','Čeká na informační jízdu','Informační schůzka OK, čekáme na feedback','Čekáme na podpis smlouvy','Čekáme na dokončení online teorie','Čekáme na výběr termínu první jízdy','První jízda','Závěrečný test','Dokončeno'];
 const FAZE_IDX={};FAZE.forEach((f,i)=>FAZE_IDX[f.toLowerCase().trim()]=i);
@@ -211,16 +211,17 @@ async function loadTracker(){
   try{
     const [hr,nabor]=await Promise.all([fetchHR(),fetchNabor()]);
 
-    // HR data: select A,C,D,H,K → pevné indexy 0,1,2,3,4
-    const hId=0, hSur=1, hName=2, hLoc=3, hState=4;
+    // HR data: select A,C,D,G,H,J,K → pevné indexy
+    const hId=0, hSur=1, hName=2, hCargo=3, hLoc=4, hStateNum=5, hState=6;
 
     // Data nábor: id → max timestamp (query vrací col0=id, col1=max_timestamp)
-    // Data nábor: max(D) group by A → col0=id, col1=max_timestamp
+    // Data nábor: avg(D) group by courier_id,state → col0=courier_id, col1=state, col2=avg_timestamp
     const tsMap={};
     nabor.rows.forEach(r=>{
-      const cid=r[0]?String(Math.round(parseFloat(r[0]))):'';
-      const ts=r[1]||'';
-      if(cid&&cid!=='NaN'&&ts)tsMap[cid]=ts;
+      const cid=r[0]?r[0].trim():'';
+      const st =r[1]?r[1].trim():'';
+      const ts =r[2]||'';
+      if(cid&&st&&ts)tsMap[cid+'_'+st]=ts;
     });
 
     // Deduplikace HR podle hiring_id
@@ -234,7 +235,9 @@ async function loadTracker(){
       const state=(hState>=0?r[hState]:'').toLowerCase().trim();
       if(ODPAD.has(state)||state==='dokončeno'||state==='duplicita')return;
       if(FAZE_IDX[state]===undefined)return;
-      const since=tsMap[id]||'';
+      const cargoId=hCargo>=0?r[hCargo].trim():'';
+      const stateNum=hStateNum>=0?r[hStateNum].trim():'';
+      const since=tsMap[cargoId+'_'+stateNum]||'';
       allRows.push({
         id,
         surname:hSur>=0?r[hSur]:'',
