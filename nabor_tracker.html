@@ -136,7 +136,7 @@ const SHEET_ID  = '1Uv2FopQw5G9R1zvHaklswL9r_gqSO8RqJZ_vH7LzfQk';
 const GID_HR    = '1690462673';
 const GID_NABOR = '1567340540';
 const csvUrl = gid => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
-const csvNaborUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_NABOR}&tq=${encodeURIComponent('select A,max(D) where P=1 group by A')}`;
+const csvNaborUrl = (offset=0) => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_NABOR}&tq=${encodeURIComponent('select A,D where N=1 limit 9000 offset '+offset)}`;
 const csvHRUrl = () => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID_HR}&tq=${encodeURIComponent('select A,C,D,G,H,J,K')}`;
 
 const FAZE=['V čekačce','Čekáme na výběr termínu informační jízdy','Čeká na informační jízdu','Informační schůzka OK, čekáme na feedback','Čekáme na podpis smlouvy','Čekáme na dokončení online teorie','Čekáme na výběr termínu první jízdy','První jízda','Závěrečný test','Dokončeno'];
@@ -186,9 +186,18 @@ async function fetchHR(){
 }
 async function fetchNabor(){
   if(cacheNabor)return cacheNabor;
-  const r=await fetch(csvNaborUrl());
-  if(!r.ok)throw new Error('Data nábor: HTTP '+r.status);
-  cacheNabor=parseCSV(await r.text());
+  let allRows=[];
+  let header=null;
+  for(let offset=0;offset<200000;offset+=9000){
+    const r=await fetch(csvNaborUrl(offset));
+    if(!r.ok)throw new Error('Data nábor: HTTP '+r.status);
+    const parsed=parseCSV(await r.text());
+    if(!header)header=parsed.header;
+    if(!parsed.rows.length)break;
+    allRows=allRows.concat(parsed.rows);
+    if(parsed.rows.length<9000)break;
+  }
+  cacheNabor={header:header||[],rows:allRows};
   return cacheNabor;
 }
 
